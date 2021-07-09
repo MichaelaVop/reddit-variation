@@ -39,7 +39,7 @@ export class UserResolver {
             return {
                 errors: [{
                     field: 'username',
-                    message: 'username is not long enough'
+                    message: 'username is not long enough',
                 },],
             };
         }
@@ -47,7 +47,7 @@ export class UserResolver {
             return {
                 errors: [{
                     field: 'password',
-                    message: 'password must be longer than 5 digits'
+                    message: 'password must be longer than 5 digits',
                 },],
             };
         }
@@ -57,7 +57,21 @@ export class UserResolver {
             username: options.username,
             password: hashedPassword,
         });
-        await em.persistAndFlush(user);
+
+        try {
+            await em.persistAndFlush(user);
+        } catch (err) {
+            //|| err.detail.includes("already exists")
+            // if (err.code === "23505") {
+            //     return {
+            //         errors: [{
+            //             field: 'username',
+            //             message: 'username is already taken',
+            //         },],
+            //     };
+            // }
+            console.log ('error message: ', err.message) 
+        }
         return {user};
     }
 

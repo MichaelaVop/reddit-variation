@@ -74,7 +74,7 @@ let UserResolver = class UserResolver {
                 return {
                     errors: [{
                             field: 'username',
-                            message: 'username is not long enough'
+                            message: 'username is not long enough',
                         },],
                 };
             }
@@ -82,7 +82,7 @@ let UserResolver = class UserResolver {
                 return {
                     errors: [{
                             field: 'password',
-                            message: 'password must be longer than 5 digits'
+                            message: 'password must be longer than 5 digits',
                         },],
                 };
             }
@@ -91,7 +91,12 @@ let UserResolver = class UserResolver {
                 username: options.username,
                 password: hashedPassword,
             });
-            yield em.persistAndFlush(user);
+            try {
+                yield em.persistAndFlush(user);
+            }
+            catch (err) {
+                console.log('error message: ', err.message);
+            }
             return { user };
         });
     }
