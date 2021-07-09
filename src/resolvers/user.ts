@@ -1,13 +1,14 @@
 import { MyContext } from "src/types";
+import { User } from '../entities/User'
 import { Resolver, Mutation, Arg, InputType, Field, Ctx } from "type-graphql";
 import argon2 from 'argon2';
 
 @InputType()
 class UsernamePasswordInput {
     @Field()
-    username: string
+    username: string;
     @Field()
-    password: string
+    password: string;
 }
 
 @Resolver()
@@ -25,4 +26,4 @@ export class UserResolver {
         await em.persistAndFlush(user);
         return user;
     }
-}
+} 
